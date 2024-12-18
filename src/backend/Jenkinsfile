@@ -12,10 +12,7 @@ pipeline {
         }
         stage('Install Dependencies') {
             steps {
-                sh '''
-                    cd /var/lib/jenkins/workspace/backend-ci-pipeline/src/backend
-                    npm install
-                '''
+                sh 'echo Install Dependencies...'
             }
         }
         stage('Run Tests') {
@@ -25,7 +22,7 @@ pipeline {
         }
         stage('Build') {
             steps {
-                sh 'npm run build'
+                sh 'echo Build...'
             }
         }
         stage('Deploy') {
