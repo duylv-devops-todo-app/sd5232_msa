@@ -1,0 +1,45 @@
+pipeline {
+    agent { docker { image 'node:22.12.0-alpine3.21' } }
+    environment {
+        // Define any required environment variables here
+        NODE_ENV = 'production'
+    }
+    stages {
+        stage('Checkout Code') {
+            steps {
+                checkout scm // Pull the latest code from the repository
+            }
+        }
+        stage('Install Dependencies') {
+            steps {
+                sh 'npm install'
+            }
+        }
+        stage('Run Tests') {
+            steps {
+                sh 'npm test'
+            }
+        }
+        stage('Build') {
+            steps {
+                sh 'npm run build'
+            }
+        }
+        stage('Deploy') {
+            when {
+                branch 'main'
+            }
+            steps {
+                sh 'echo Deploying the application...'
+            }
+        }
+    }
+    post {
+        success {
+            echo 'Pipeline completed successfully!'
+        }
+        failure {
+            echo 'Pipeline failed. Please check the logs.'
+        }
+    }
+}
