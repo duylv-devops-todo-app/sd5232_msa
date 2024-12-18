@@ -13,7 +13,7 @@ pipeline {
         stage('Install Dependencies') {
             steps {
                 sh '''
-                    cd /src/backend
+                    cd /var/lib/jenkins/workspace/backend-ci-pipeline/src/backend
                     npm install
                 '''
             }
