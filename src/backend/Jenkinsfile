@@ -1,23 +1,26 @@
 pipeline {
     agent { docker { image 'node:22.12.0-alpine3.21' } }
     environment {
-        // Define any required environment variables here
-        NODE_ENV = 'production'
+        AWS_ACCESS_KEY_ID = credentials('AWS_ACCESS_KEY_ID')
+        AWS_SECRET_ACCESS_KEY = credentials('AWS_SECRET_ACCESS_KEY')
+        AWS_DEFAULT_REGION = 'us-east-1'
+
+        registry = ''
+        registryCredential = 'aws-credentials'
+        tag = "$BUILD_NUMBER"
+        dockerImage = "backend-${tag}"
     }
     stages {
         stage('Checkout Code') {
             steps {
-                checkout scm // Pull the latest code from the repository
+                checkout scm
             }
         }
-        stage('Install Dependencies') {
+        stage('Build Docker Image') {
             steps {
-                sh 'echo Install Dependencies...'
-            }
-        }
-        stage('Run Tests') {
-            steps {
-                sh 'npm test'
+                script {
+                    app = docker.build(dockerImage, "-f src/backend/Dockerfile .")
+                }
             }
         }
         stage('Build') {
@@ -25,21 +28,16 @@ pipeline {
                 sh 'echo Build...'
             }
         }
-        stage('Deploy') {
-            when {
-                branch 'main'
-            }
+        stage('Deploy image') {
             steps {
-                sh 'echo Deploying the application...'
+                script{
+                    docker.withRegistry("https://${registry}", "ecr:us-east-1:${registryCredential}") {
+                        sh "docker tag ${dockerImage} ${registry}:${tag}"
+                        sh "docker push ${registry}:${tag}"
+                    }
+                }
+
             }
-        }
-    }
-    post {
-        success {
-            echo 'Pipeline completed successfully!'
-        }
-        failure {
-            echo 'Pipeline failed. Please check the logs.'
         }
     }
 }
