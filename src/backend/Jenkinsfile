@@ -1,5 +1,9 @@
 pipeline {
-    agent { docker { image 'node:22.12.0-alpine3.21' } }
+    agent {
+        docker {
+            image 'node:22.12.0-alpine3.21'
+        }
+    }
     environment {
         AWS_ACCESS_KEY_ID = credentials('AWS_ACCESS_KEY_ID')
         AWS_SECRET_ACCESS_KEY = credentials('AWS_SECRET_ACCESS_KEY')
