@@ -20,9 +20,9 @@ pipeline {
             steps {
                 script {
                     sh "pwd"
-                    sh "cd src/backend/"
+                    sh "cd /var/lib/jenkins/workspace/backend-ci-pipeline/src/backend"
                     sh "pwd"
-                    app = docker.build(dockerImage, "-f src/backend/Dockerfile .")
+                    app = docker.build(dockerImage, "-f /var/lib/jenkins/workspace/backend-ci-pipeline/src/backend/Dockerfile .")
                 }
             }
         }
