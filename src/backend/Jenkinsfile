@@ -35,7 +35,7 @@ pipeline {
         stage('Deploy image') {
             steps {
                 script{
-                    docker.withRegistry("https://${registry}", "ecr:us-east-1:${registryCredential}") {
+                    docker.withRegistry("https://${registry}", "${registryCredential}") {
                         sh "docker tag ${dockerImage} ${registry}:${tag}"
                         sh "docker push ${registry}:${tag}"
                     }
