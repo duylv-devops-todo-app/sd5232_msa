@@ -19,6 +19,7 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
+                    sh "cd src/backend/"
                     app = docker.build(dockerImage, "-f src/backend/Dockerfile .")
                 }
             }
