@@ -6,7 +6,7 @@ pipeline {
         AWS_DEFAULT_REGION = 'us-east-1'
 
         registry = "${env.ECR_URL}"
-        registryCredential = 'aws-credentials'
+        registryCredential = 'user-aws'
         tag = "$BUILD_NUMBER"
         dockerImage = "backend-${tag}"
     }
