@@ -1,0 +1,12 @@
+service:
+  name: backend
+  port: 3000
+  targetPort: 3000
+deployment:
+  name: backend
+  replicas: 1
+  containerPort: 3000
+image:
+  repository: hnguyencanh/backend
+  tag: latest
+  pullPolicy: Always

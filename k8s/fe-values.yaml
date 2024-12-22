@@ -1,0 +1,12 @@
+service:
+  name: frontend
+  port: 3000
+  targetPort: 3000
+deployment:
+  name: frontend
+  replicas: 2
+  containerPort: 80
+image:
+  repository: hnguyencanh/frontend
+  tag: latest
+  pullPolicy: Always
