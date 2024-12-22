@@ -8,7 +8,7 @@ pipeline {
         registry = "${env.ECR_URL}"
         registryCredential = "${env.AWS_CREDENTIAL_ID}"
         tag = "$BUILD_NUMBER"
-        dockerImage = "backend-${tag}"
+        dockerImage = "frontend-${tag}"
     }
     stages {
         stage('Checkout Code') {
@@ -21,7 +21,7 @@ pipeline {
                 script {
                     sh "pwd"
                     sh '''
-                        cd /var/lib/jenkins/workspace/backend-ci-pipeline/src/backend && pwd
+                        cd /var/lib/jenkins/workspace/frontend-ci-pipeline/src/frontend && pwd
                         docker build -t ${dockerImage} .
                     '''
                 }
