@@ -1,3 +1,11 @@
+# kind: Service
+# apiVersion: v1
+# metadata:
+#   name: frontend
+# spec:
+#   type: ExternalName
+#   externalName: frontend.eks-ns.svc.cluster.local
+# ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
@@ -7,12 +15,12 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-  - http:
-      paths:
-      - path: /
-        pathType: Prefix
-        backend:
-          service:
-            name: frontend
-            port:
-              number: 3000
+    - http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: frontend
+                port:
+                  number: 3000
