@@ -1,11 +1,3 @@
-# kind: Service
-# apiVersion: v1
-# metadata:
-#   name: frontend
-# spec:
-#   type: ExternalName
-#   externalName: frontend.eks-ns.svc.cluster.local
-# ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
