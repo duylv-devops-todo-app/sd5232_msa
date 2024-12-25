@@ -8,3 +8,9 @@ kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/cont
 kubectl apply -f ingress.yml
 # kubectl get pods --namespace=ingress-nginx | grep nginx
 kubectl get ingress -o wide
+
+kubectl get pods -n ingress-nginx
+
+kubectl logs -f ingress-nginx-controller-7fb8b84675-csbsw -n ingress-nginx
+
+git clone https://github.com/duylv-devops-todo-app/sd5232_msa.git
