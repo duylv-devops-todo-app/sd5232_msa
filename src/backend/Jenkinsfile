@@ -5,7 +5,6 @@ pipeline {
         registry = "${env.BE_REGISTRY}"
         registryCredential = "user-aws"
         version = "$BUILD_NUMBER"
-
         app_name = "backend"
     }
     stages {
@@ -18,8 +17,8 @@ pipeline {
             steps {
                 script {
                     sh """
-                        cd /var/lib/jenkins/workspace/backend-ci-pipeline/src/backend && pwd
-                        docker build -t ${registry}:${app_name}-${version} .
+                        echo 'Building Docker image...'
+                        docker build -t ${registry}/${app_name}:${version} .
                     """
                 }
             }
@@ -31,10 +30,10 @@ pipeline {
         }
         stage('Deploy image') {
             steps {
-                script{
+                script {
                     docker.withRegistry("https://${registry}", "ecr:${AWS_DEFAULT_REGION}:${registryCredential}") {
-                        sh "docker tag ${app_name}-${version} ${registry}/${app_name}-${version}"
-                        sh "docker push ${registry}-${version}"
+                        sh "docker tag ${app_name}:${version} ${registry}/${app_name}:${version}"
+                        sh "docker push ${registry}/${app_name}:${version}"
                     }
                 }
             }
