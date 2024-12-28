@@ -3,14 +3,15 @@ pipeline {
     environment {
         AWS_ACCESS_KEY_ID = credentials('AWS_ACCESS_KEY_ID')
         AWS_SECRET_ACCESS_KEY = credentials('AWS_SECRET_ACCESS_KEY')
-        AWS_DEFAULT_REGION = 'us-east-1'
+        AWS_DEFAULT_REGION = ${env.REGION}
 
         registry = "${env.ECR_URL}"
         registryCredential = "${env.AWS_CREDENTIAL_ID}"
-        tag = "$BUILD_NUMBER"
-        dockerImage = "backend-${tag}"
+        version = "$BUILD_NUMBER"
+
+        app_name = "backend"
     }
-    stages {
+    stag`es {
         stage('Checkout Code') {
             steps {
                 checkout scm
@@ -19,11 +20,10 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    sh "pwd"
-                    sh '''
+                    sh """
                         cd /var/lib/jenkins/workspace/backend-ci-pipeline/src/backend && pwd
-                        docker build -t ${dockerImage} .
-                    '''
+                        docker build -t ${registry}:${app_name}:${version} .
+                    """
                 }
             }
         }
@@ -35,9 +35,9 @@ pipeline {
         stage('Deploy image') {
             steps {
                 script{
-                    docker.withRegistry("https://${registry}", "ecr:us-east-1:${registryCredential}") {
-                        sh "docker tag ${dockerImage} ${registry}:${tag}"
-                        sh "docker push ${registry}:${tag}"
+                    docker.withRegistry("https://${registry}", "ecr:${AWS_DEFAULT_REGION}:${registryCredential}") {
+                        sh "docker tag ${registry}:${app_name}:${version}"
+                        sh "docker push ${registry}:${version}"
                     }
                 }
             }

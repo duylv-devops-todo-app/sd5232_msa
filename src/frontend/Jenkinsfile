@@ -3,12 +3,13 @@ pipeline {
     environment {
         AWS_ACCESS_KEY_ID = credentials('AWS_ACCESS_KEY_ID')
         AWS_SECRET_ACCESS_KEY = credentials('AWS_SECRET_ACCESS_KEY')
-        AWS_DEFAULT_REGION = 'us-east-1'
+        AWS_DEFAULT_REGION = ${env.AWS_REGION}
 
         registry = "${env.ECR_URL}"
         registryCredential = "${env.AWS_CREDENTIAL_ID}"
-        tag = "$BUILD_NUMBER"
-        dockerImage = "frontend-${tag}"
+        version = "$BUILD_NUMBER"
+
+        app_name = "frontend"
     }
     stages {
         stage('Checkout Code') {
@@ -20,10 +21,10 @@ pipeline {
             steps {
                 script {
                     sh "pwd"
-                    sh '''
+                    sh """
                         cd /var/lib/jenkins/workspace/frontend-ci-pipeline/src/frontend && pwd
-                        docker build -t ${dockerImage} .
-                    '''
+                        docker build -t ${registry}:${app_name}:${version} .
+                    """
                 }
             }
         }
@@ -35,9 +36,9 @@ pipeline {
         stage('Deploy image') {
             steps {
                 script{
-                    docker.withRegistry("https://${registry}", "ecr:us-east-1:${registryCredential}") {
-                        sh "docker tag ${dockerImage} ${registry}:${tag}"
-                        sh "docker push ${registry}:${tag}"
+                    docker.withRegistry("https://${registry}", "ecr:${AWS_DEFAULT_REGION}:${registryCredential}") {
+                        sh "docker tag ${registry}:${app_name}:${version}"
+                        sh "docker push ${registry}:${version}"
                     }
                 }
             }

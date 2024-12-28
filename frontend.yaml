@@ -1,10 +1,10 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: frontend
+  name: ${APP_NAME}
 spec:
   selector:
-    app: frontend
+    app: ${APP_NAME}
   ports:
     - port: 3000
       protocol: TCP
@@ -15,20 +15,20 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: frontend
+  name: ${APP_NAME}
 spec:
   selector:
     matchLabels:
-      app: frontend
+      app: ${APP_NAME}
   replicas: 1
   template:
     metadata:
       labels:
-        app: frontend
+        app: ${APP_NAME}
     spec:
       containers:
         - name: react-app
-          image: ${FRONTEND_IMAGE}:${VERSION}
+          image: ${REGISTRY}:${APP_NAME}:${VERSION}
           imagePullPolicy: Always
           ports:
             - containerPort: 3000
