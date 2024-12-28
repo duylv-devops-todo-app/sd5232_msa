@@ -28,7 +28,7 @@ spec:
     spec:
       containers:
         - name: react-app
-          image: hnguyencanh/frontend:latest
+          image: ${FRONTEND_IMAGE}:${VERSION}
           imagePullPolicy: Always
           ports:
             - containerPort: 3000

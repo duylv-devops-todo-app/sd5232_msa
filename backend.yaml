@@ -27,7 +27,7 @@ spec:
     spec:
       containers:
         - name: backend
-          image: duylevan/backend:latest
+          image: ${BACKEND_IMAGE}:${VERSION}
           imagePullPolicy: Always
           ports:
             - containerPort: 3000
