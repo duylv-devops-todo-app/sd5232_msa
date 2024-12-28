@@ -1,10 +1,10 @@
 pipeline {
     agent any
     environment {
+        AWS_DEFAULT_REGION = "${env.AWS_REGION}"
         registry = "${env.FE_REGISTRY}"
-        registryCredential = "${env.AWS_CREDENTIAL_ID}"
+        registryCredential = "user-aws"
         version = "$BUILD_NUMBER"
-
         app_name = "frontend"
     }
     stages {
@@ -16,10 +16,10 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    sh "pwd"
                     sh """
-                        cd /var/lib/jenkins/workspace/frontend-ci-pipeline/src/frontend && pwd
-                        docker build -t ${registry}:${app_name}-${version} .
+                        echo 'Building Docker image...'
+                        cd /var/lib/jenkins/workspace/frontend-ci-pipeline/src/backend && pwd
+                        docker build -t ${app_name}-${version} .
                     """
                 }
             }
@@ -31,9 +31,10 @@ pipeline {
         }
         stage('Deploy image') {
             steps {
-                script{
-                    docker.withRegistry("https://${registry}", "ecr:${AWS_DEFAULT_REGION}:${registryCredential}") {
-                        sh "docker tag ${registry}:${app_name}:${version}"
+                script {
+                    withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', accessKeyVariable: 'AWS_ACCESS_KEY_ID', credentialsId: 'user-aws', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY']]) {
+                        sh "aws ecr get-login-password --region ${AWS_DEFAULT_REGION} | docker login --username AWS --password-stdin ${registry}"
+                        sh "docker tag ${app_name}-${version} ${registry}:${version}"
                         sh "docker push ${registry}:${version}"
                     }
                 }
