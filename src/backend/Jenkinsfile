@@ -19,7 +19,8 @@ pipeline {
         }
         stage('Checkout Code') {
             steps {
-                checkout scm
+                // checkout scm
+                sh 'echo Build...'
             }
         }
         stage('Build Docker Image') {
