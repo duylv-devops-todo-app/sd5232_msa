@@ -1,8 +1,8 @@
 pipeline {
     agent any
     environment {
-        AWS_ACCESS_KEY_ID = 'credentials('AWS_ACCESS_KEY_ID')'
-        AWS_SECRET_ACCESS_KEY = 'credentials('AWS_SECRET_ACCESS_KEY')'
+        AWS_ACCESS_KEY_ID = credentials('AWS_ACCESS_KEY_ID')
+        AWS_SECRET_ACCESS_KEY = credentials('AWS_SECRET_ACCESS_KEY')
         AWS_DEFAULT_REGION = "${env.AWS_REGION}"
 
         registry = "${env.BE_REGISTRY}"
@@ -12,16 +12,9 @@ pipeline {
         app_name = "backend"
     }
     stages {
-        stage('Test AWS') {
-            steps {
-                echo $AWS_SECRET_ACCESS_KEY
-                sh 'aws s3 ls'
-            }
-        }
         stage('Checkout Code') {
             steps {
-                // checkout scm
-                sh 'echo Build...'
+                checkout scm
             }
         }
         stage('Build Docker Image') {
