@@ -19,7 +19,7 @@ pipeline {
                     sh """
                         echo 'Building Docker image...'
                         cd /var/lib/jenkins/workspace/backend-ci-pipeline/src/backend && pwd
-                        docker build -t ${registry}/${app_name}-${version} .
+                        docker build -t ${app_name}-${version} .
                     """
                 }
             }
@@ -33,8 +33,8 @@ pipeline {
             steps {
                 script {
                     docker.withRegistry("https://${registry}", "ecr:${AWS_DEFAULT_REGION}:${registryCredential}") {
-                        sh "docker tag ${registry}/${app_name}-${version} ${registry}/${app_name}-${version}"
-                        sh "docker push ${registry}/${app_name}-${version}"
+                        sh "docker tag ${app_name} ${app_name}-${version}"
+                        sh "docker push ${app_name}-${version}"
                     }
                 }
             }
