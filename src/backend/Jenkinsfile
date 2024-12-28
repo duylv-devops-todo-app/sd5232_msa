@@ -5,7 +5,7 @@ pipeline {
         AWS_SECRET_ACCESS_KEY = credentials('AWS_SECRET_ACCESS_KEY')
         AWS_DEFAULT_REGION = ${env.REGION}
 
-        registry = "${env.ECR_URL}"
+        registry = "${env.BE_REGISTRY}"
         registryCredential = "${env.AWS_CREDENTIAL_ID}"
         version = "$BUILD_NUMBER"
 
