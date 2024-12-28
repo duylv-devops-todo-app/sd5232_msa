@@ -1,10 +1,6 @@
 pipeline {
     agent any
     environment {
-        AWS_ACCESS_KEY_ID = credentials('AWS_ACCESS_KEY_ID')
-        AWS_SECRET_ACCESS_KEY = credentials('AWS_SECRET_ACCESS_KEY')
-        AWS_DEFAULT_REGION = "${env.AWS_REGION}"
-
         registry = "${env.FE_REGISTRY}"
         registryCredential = "${env.AWS_CREDENTIAL_ID}"
         version = "$BUILD_NUMBER"
@@ -23,7 +19,7 @@ pipeline {
                     sh "pwd"
                     sh """
                         cd /var/lib/jenkins/workspace/frontend-ci-pipeline/src/frontend && pwd
-                        docker build -t ${registry}:${app_name}:${version} .
+                        docker build -t ${registry}:${app_name}-${version} .
                     """
                 }
             }
