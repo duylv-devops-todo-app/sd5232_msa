@@ -18,7 +18,7 @@ pipeline {
                 script {
                     sh """
                         cd /var/lib/jenkins/workspace/backend-ci-pipeline/src/backend && pwd
-                        docker build -t ${registry}:${app_name}:${version} .
+                        docker build -t ${registry}:${app_name}-${version} .
                     """
                 }
             }
