@@ -12,9 +12,13 @@ pipeline {
         app_name = "backend"
     }
     stages {
+        stage('Test AWS') {
+            steps {
+                sh 'aws s3 ls'
+            }
+        }
         stage('Checkout Code') {
             steps {
-                sh 'aws s3 ls' // Example AWS CLI command
                 checkout scm
             }
         }
