@@ -11,7 +11,7 @@ pipeline {
 
         app_name = "backend"
     }
-    stag`es {
+    stages {
         stage('Checkout Code') {
             steps {
                 checkout scm
