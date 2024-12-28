@@ -15,7 +15,7 @@ pipeline {
         stage('Checkout Code') {
             steps {
                 checkout scm
-                echo "${AWS_ACCESS_KEY_ID}"
+                echo $AWS_ACCESS_KEY_ID
             }
         }
         stage('Build Docker Image') {
