@@ -32,7 +32,7 @@ pipeline {
         stage('Deploy image') {
             steps {
                 script {
-                    docker.withRegistry("https://${registry}", "ecr:${AWS_DEFAULT_REGION}:${registryCredential}") {
+                    withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', accessKeyVariable: 'AWS_ACCESS_KEY_ID', credentialsId: 'AWS_CREDS', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY']]) {
                         sh "aws ecr get-login-password --region ${AWS_DEFAULT_REGION} | docker login --username AWS --password-stdin ${registry}"
                         sh "docker tag ${app_name}-${version} ${app_name}-${version}"
                         sh "docker push ${app_name}-${version}"
