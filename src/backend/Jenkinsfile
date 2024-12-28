@@ -33,11 +33,9 @@ pipeline {
             steps {
                 script {
                     withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', accessKeyVariable: 'AWS_ACCESS_KEY_ID', credentialsId: 'user-aws', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY']]) {
-                        echo "aws ecr get-login-password --region ${AWS_DEFAULT_REGION} | docker login --username AWS --password-stdin ${registry}"
                         sh "aws ecr get-login-password --region ${AWS_DEFAULT_REGION} | docker login --username AWS --password-stdin ${registry}"
-                        echo 'Login Done'
-                        sh "docker tag ${app_name}-${version} ${app_name}-${version}"
-                        sh "docker push ${app_name}-${version}"
+                        sh "docker tag ${app_name}-${version} ${registry}:${version}"
+                        sh "docker push ${registry}:${version}"
                     }
                 }
             }
