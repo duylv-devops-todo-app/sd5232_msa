@@ -33,7 +33,7 @@ pipeline {
             steps {
                 script {
                     docker.withRegistry("https://${registry}", "ecr:${AWS_DEFAULT_REGION}:${registryCredential}") {
-                        sh "docker tag ${app_name} ${app_name}-${version}"
+                        sh "docker tag ${app_name}-${version} ${app_name}-${version}"
                         sh "docker push ${app_name}-${version}"
                     }
                 }
