@@ -1,0 +1,14 @@
+replicaCount: 1
+image:
+  repository: duylevan/backend
+  tag: "{{ .Values.image.tag | default 'latest' }}"
+  pullPolicy: Always
+
+service:
+  name: backend
+  port: 3000
+  targetPort: 3000
+  protocol: TCP
+
+labels:
+  app: backend

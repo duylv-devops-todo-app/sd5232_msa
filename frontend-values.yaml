@@ -1,0 +1,21 @@
+app:
+  name: frontend
+
+service:
+  name: frontend
+  port: 3000
+  targetPort: 3000
+  type: ClusterIP
+
+deployment:
+  name: frontend
+  replicas: 1
+
+container:
+  name: react-app
+  port: 3000
+
+image:
+  repository: duylevan/backend
+  tag: "{{ .Values.image.tag | default 'latest' }}"
+  pullPolicy: Always

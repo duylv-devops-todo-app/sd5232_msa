@@ -1,34 +1,35 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: frontend
+  name: {{ .Values.service.name }}
 spec:
   selector:
-    app: frontend
+    app: {{ .Values.app.name }}
   ports:
-    - port: 3000
+    - port: {{ .Values.service.port }}
       protocol: TCP
-      targetPort: 3000
-  type: ClusterIP
+      targetPort: {{ .Values.service.targetPort }}
+  type: {{ .Values.service.type }}
 
 ---
+
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: frontend
+  name: {{ .Values.deployment.name }}
 spec:
   selector:
     matchLabels:
-      app: frontend
-  replicas: 1
+      app: {{ .Values.app.name }}
+  replicas: {{ .Values.deployment.replicas }}
   template:
     metadata:
       labels:
-        app: frontend
+        app: {{ .Values.app.name }}
     spec:
       containers:
-        - name: react-app
-          image: hnguyencanh/frontend:latest
-          imagePullPolicy: Always
+        - name: {{ .Values.container.name }}
+          image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
-            - containerPort: 3000
+            - containerPort: {{ .Values.container.port }}
