@@ -6,7 +6,7 @@ pipeline {
         AWS_DEFAULT_REGION = "${env.AWS_REGION}"
 
         registry = "${env.BE_REGISTRY}"
-        registryCredential = "user-aws
+        registryCredential = "user-aws"
         version = "$BUILD_NUMBER"
 
         app_name = "backend"
