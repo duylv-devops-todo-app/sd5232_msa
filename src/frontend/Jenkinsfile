@@ -18,7 +18,7 @@ pipeline {
                 script {
                     sh """
                         echo 'Building Docker image...'
-                        cd /var/lib/jenkins/workspace/frontend-ci-pipeline/src/backend && pwd
+                        cd /var/lib/jenkins/workspace/frontend-ci-pipeline/src/frontend && pwd
                         docker build -t ${app_name}-${version} .
                     """
                 }
