@@ -8,7 +8,7 @@ pipeline {
     }
 
     parameters {
-        version = string(name: 'version', defaultValue: 'latest', description: 'Application Version')
+        string(name: 'version', defaultValue: 'latest', description: 'Application Version')
     }
     
     stages {
