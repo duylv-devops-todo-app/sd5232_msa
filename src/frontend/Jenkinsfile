@@ -4,9 +4,13 @@ pipeline {
         AWS_DEFAULT_REGION = "${env.AWS_REGION}"
         registry = "${env.FE_REGISTRY}"
         registryCredential = "user-aws"
-        version = string(name: 'version', defaultValue: 'latest', description: 'Application Version')
         app_name = "frontend"
     }
+
+    parameters {
+        string(name: 'version', defaultValue: 'latest', description: 'Application Version')
+    }
+    
     stages {
         stage('Checkout Code') {
             steps {
