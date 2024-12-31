@@ -28,7 +28,7 @@ spec:
     spec:
       containers:
         - name: frontend
-          image: 811092048891.dkr.ecr.us-east-1.amazonaws.com/sd5232_ecr_fe:3
+          image: 811092048891.dkr.ecr.us-east-1.amazonaws.com/sd5232_ecr_fe:4
           imagePullPolicy: Always
           ports:
             - containerPort: 3000
